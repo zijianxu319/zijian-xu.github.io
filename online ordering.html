@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Information for Online Ordering</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let cartItems = [];
+
+      const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+      addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const itemElement = this.parentElement;
+          const itemName = itemElement.querySelector('.card-title').textContent;
+          const itemPrice = itemElement.querySelector('.card-text strong').textContent.replace('Price: $', '');
+
+          cartItems.push({ name: itemName, price: parseFloat(itemPrice) });
+          updateCart();
+        });
+      });
+
+      function updateCart() {
+        const cartItemsList = document.getElementById('cartItemsList');
+        cartItemsList.innerHTML = '';
+
+        let totalPrice = 0;
+
+        cartItems.forEach((item, index) => {
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `
+        ${item.name} - $${item.price.toFixed(2)}
+        <button class="remove-from-cart" data-index="${index}">Remove</button>
+      `;
+          cartItemsList.appendChild(listItem);
+
+          totalPrice += item.price;
+        });
+
+        document.querySelector('.cart-count').textContent = cartItems.length.toString();
+        document.getElementById('cartTotalPrice').textContent = `总价: $${totalPrice.toFixed(2)}`;
+
+        cartItemsList.querySelectorAll('.remove-from-cart').forEach(button => {
+          button.addEventListener('click', function() {
+            const itemIndex = this.getAttribute('data-index');
+            cartItems.splice(itemIndex, 1);
+            updateCart();
+          });
+        });
+      }
+
+      updateCart();
+
+      const checkoutButton = document.getElementById('checkoutButton');
+      checkoutButton.addEventListener('click', function() {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        window.location.href = 'checkout.html';
+      });
+    });
+  </script>
+  <style>
+    .bg-image {
+      background-image: url('credits/menubg.jpg');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      overflow: auto;
+    }
+
+    .header {
+      background-color: rgba(255, 222, 2, 0.89);
+      color: #600909;
+      padding: 10px 20px;
+      text-align: center;
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+    }
+
+    .header a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .logo {
+      margin-right: 10px;
+      height: 50px;
+      width: auto;
+      background-color: transparent;
+    }
+
+    .menu-container {
+      background-color: orange;
+      width: 150px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .menu-container .logo {
+      margin-bottom: 15px;
+      height: 60px;
+      width: auto;
+    }
+
+    .menu-container .menu-item {
+      text-decoration: none;
+      color: #600909;
+      font-size: 18px;
+      padding: 10px 0;
+      margin: 0;
+      transition: background-color 0.3s;
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+
+    .menu-container .menu-item:hover {
+      color: white;
+      background-color: #b82d0e;
+    }
+
+    .container-custom {
+      margin-left: 160px;
+      padding: 20px;
+    }
+
+    .section {
+      padding: 50px 0;
+      margin-top: 20px;
+    }
+
+    .section-title {
+      margin-bottom: 30px;
+    }
+
+    .bg-vegetarian {
+      background-color: #f9f9f9;
+    }
+
+    .bg-meat {
+      background-color: #ffe6e6;
+    }
+
+    .bg-main-courses {
+      background-color: #e6f7ff;
+    }
+
+    .bg-soup {
+      background-color: #fffbe6;
+    }
+
+    .bg-dessert {
+      background-color: #f7e6ff;
+    }
+
+    .bg-drinks {
+      background-color: #e6ffe6;
+    }
+
+    .card {
+      width: 300px;
+    }
+
+    .card-img-top {
+      object-fit: cover;
+      width: 100%;
+      height: 200px;
+    }
+
+    .card-title {
+      color: #803828;
+    }
+
+    .btn-custom {
+      color: #600909;
+      background-color: transparent;
+      border: 2px solid #600909;
+      font-size: 18px;
+      padding: 10px 0;
+      transition: background-color 0.3s;
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+
+    .btn-custom:hover {
+      color: white;
+      background-color: #b82d0e;
+    }
+
+    .cart-modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .cart-modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .fixed-cart {
+      position: fixed;
+      top: 50px;
+      right: 20px;
+      width: 200px;
+      background-color: #f9f9f9;
+      border: 2px solid #600909;
+      padding: 10px;
+      z-index: 1000;
+    }
+
+    .cart-modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .cart-modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .fixed-cart {
+      position: fixed;
+      top: 50px;
+      right: 20px;
+      width: 200px;
+      background-color: #f9f9f9;
+      border: 2px solid #600909;
+      padding: 10px;
+      z-index: 1000;
+    }
+
+    .cart-modal {
+      display: block;
+      background-color: transparent;
+      position: static;
+      z-index: auto;
+    }
+
+    .cart-modal-content {
+      margin: 0;
+      padding: 0;
+      border: none;
+      width: 100%;
+      background-color: transparent;
+    }
+
+    .cart-items-list {
+      max-height: 60vh;
+      overflow-y: auto;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+
+    .total-price {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+
+</head>
+<body class="bg-image">
+<div class="menu-container">
+
+  <a href="#">
+    <img src="credits/logo1.jpg" alt="My Logo" class="logo">
+  </a>
+
+  <a class="menu-item" href="#vegetarian">Vegetarian</a>
+  <a class="menu-item" href="#meat">Meat</a>
+  <a class="menu-item" href="#main-courses">Main Courses</a>
+  <a class="menu-item" href="#soup">Soup</a>
+  <a class="menu-item" href="#dessert">Dessert</a>
+  <a class="menu-item" href="#drinks">Drinks</a>
+</div>
+
+<div class="container container-custom">
+
+  <header class="header">
+    <a href="My Restaurant.html">
+      <img class="logo" src="credits/logo1.jpg" alt="Logo" style="background-color: transparent;">
+      <h1>Information for Online Ordering</h1>
+    </a>
+
+    <div class="cart">
+      <a href="javascript:void(0)">
+        <img src="credits/shopping-cart.webp" alt="Cart Icon" style="height: 40px;">
+        <span>Cart (<span class="cart-count">0</span>)</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="fixed-cart">
+    <div id="cartModal" class="cart-modal">
+      <div class="cart-modal-content">
+        <span class="close-cart">&times;</span>
+        <h2>Cart</h2>
+        <ul id="cartItemsList" class="cart-items-list"></ul>
+        <p id="cartTotalPrice" class="total-price"></p>
+
+        <button id="checkoutButton">Checkout</button>
+      </div>
+    </div>
+  </div>
+
+
+  <section id="vegetarian" class="section bg-vegetarian">
+    <h2 class="section-title">Vegetarian</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/green-bean.jpg" alt="Green Bean">
+          <div class="card-body">
+            <h4 class="card-title">Green Bean</h4>
+            <p class="card-text">Delicious green beans with garlic</p>
+            <p class="card-text"><strong>Price: $15.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/vegetables.jpg" alt="Stir-fried Okra with Chili">
+          <div class="card-body">
+            <h4 class="card-title">Stir-fried Okra with Chili</h4>
+            <p class="card-text">Fresh okra with chili and garlic sauce</p>
+            <p class="card-text"><strong>Price: $20.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/cauliflower.webp" alt="Cauliflower">
+          <div class="card-body">
+            <h4 class="card-title">Cauliflower</h4>
+            <p class="card-text">Fresh cauliflower with garlic</p>
+            <p class="card-text"><strong>Price: $18.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/stir-fried-morning-glory.jpg" alt="Stir-fried Water Spinach">
+          <div class="card-body">
+            <h4 class="card-title">Stir-fried Water Spinach</h4>
+            <p class="card-text">Fresh water spinach with garlic</p>
+            <p class="card-text"><strong>Price: $16.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/fried-potatoes.jpg" alt="Spicy Fried Potatoes">
+          <div class="card-body">
+            <h4 class="card-title">Spicy Fried Potatoes</h4>
+            <p class="card-text">Fried potatoes with chili</p>
+            <p class="card-text"><strong>Price: $13.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/eggs.jpg" alt="Eggs with Green Peppers">
+          <div class="card-body">
+            <h4 class="card-title">Eggs with Green Peppers</h4>
+            <p class="card-text">Eggs with green peppers and garlic</p>
+            <p class="card-text"><strong>Price: $12.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="meat" class="section bg-meat">
+    <h2 class="section-title">Meat</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/crayfish.jpg" alt="Spicy Crayfish">
+          <div class="card-body">
+            <h4 class="card-title">Spicy Crayfish</h4>
+            <p class="card-text">Fresh crayfish with spicy seasoning</p>
+            <p class="card-text"><strong>Price: $25.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/duck.jpg" alt="Peking Duck">
+          <div class="card-body">
+            <h4 class="card-title">Peking Duck</h4>
+            <p class="card-text">Fresh duck with sliced scallions, cucumber, and pancakes</p>
+            <p class="card-text"><strong>Price: $30.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/hotmeet.jpg" alt="Spicy Beef">
+          <div class="card-body">
+            <h4 class="card-title">Spicy Beef</h4>
+            <p class="card-text">Beef slices with spicy seasoning</p>
+            <p class="card-text"><strong>Price: $22.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/lanzhou.jpg" alt="Lamb Skewers">
+          <div class="card-body">
+            <h4 class="card-title">Lamb Skewers</h4>
+            <p class="card-text">Fresh lamb skewers, eight pieces</p>
+            <p class="card-text"><strong>Price: $18.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/braise-pork.jpg" alt="Braised Pork">
+          <div class="card-body">
+            <h4 class="card-title">Braised Pork</h4>
+            <p class="card-text">Braised pork with salty and sweet flavor</p>
+            <p class="card-text"><strong>Price: $20.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/pork1.webp" alt="Dongpo Pork">
+          <div class="card-body">
+            <h4 class="card-title">Dongpo Pork</h4>
+            <p class="card-text">A large piece of braised pork with salty and sweet flavor</p>
+            <p class="card-text"><strong>Price: $28.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="main-courses" class="section bg-main-courses">
+    <h2 class="section-title">Main Courses</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/fried-rice.jpg" alt="Fried Rice with Egg">
+          <div class="card-body">
+            <h4 class="card-title">Fried Rice with Egg</h4>
+            <p class="card-text">Rice fried with egg, corn, carrots, and scallions</p>
+            <p class="card-text"><strong>Price: $10.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/baozi.jpg" alt="Baozi">
+          <div class="card-body">
+            <h4 class="card-title">Baozi</h4>
+            <p class="card-text">Steamed buns with pork filling</p>
+            <p class="card-text"><strong>Price: $8.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/dumpling.webp" alt="Dumplings">
+          <div class="card-body">
+            <h4 class="card-title">Dumplings</h4>
+            <p class="card-text">Dumplings with pork and cabbage filling</p>
+            <p class="card-text"><strong>Price: $12.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/thai-food.jpg" alt="Beef Noodles">
+          <div class="card-body">
+            <h4 class="card-title">Beef Noodles</h4>
+            <p class="card-text">Beef with handmade noodles, spicy seasoning</p>
+            <p class="card-text"><strong>Price: $15.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/rice.jpg" alt="Rice">
+          <div class="card-body">
+            <h4 class="card-title">Rice</h4>
+            <p class="card-text">A bowl of white rice</p>
+            <p class="card-text"><strong>Price: $2.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/shrimp-rice.jpg" alt="Fried Rice with Shrimp">
+          <div class="card-body">
+            <h4 class="card-title">Fried Rice with Shrimp</h4>
+            <p class="card-text">Fried rice with shrimp, sausage, and green peas</p>
+            <p class="card-text"><strong>Price: $12.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="soup" class="section bg-soup">
+    <h2 class="section-title">Soup</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/chicken-soup.jpg" alt="Chicken Soup">
+          <div class="card-body">
+            <h4 class="card-title">Chicken Soup</h4>
+            <p class="card-text">Soup made from fresh hen and pork bones</p>
+            <p class="card-text"><strong>Price: $7.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/pork-bone-soup.jpg" alt="Winter Melon Pork Rib Soup">
+          <div class="card-body">
+            <h4 class="card-title">Winter Melon Pork Rib Soup</h4>
+            <p class="card-text">Soup made from pork ribs and winter melon</p>
+            <p class="card-text"><strong>Price: $8.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/soup.jpg" alt="Pepper Soup">
+          <div class="card-body">
+            <h4 class="card-title">Pepper Soup</h4>
+            <p class="card-text">Sticky soup made from shredded chicken and bean curd with a spicy pepper flavor</p>
+            <p class="card-text"><strong>Price: $6.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="dessert" class="section bg-dessert">
+    <h2 class="section-title">Dessert</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/black-forest.jpg" alt="Black Forest Cake">
+          <div class="card-body">
+            <h4 class="card-title">Black Forest Cake</h4>
+            <p class="card-text">Chocolate cake layered with fresh cherries and cream</p>
+            <p class="card-text"><strong>Price: $5.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/venus.jpg" alt="Mango Pudding">
+          <div class="card-body">
+            <h4 class="card-title">Mango Pudding</h4>
+            <p class="card-text">Mango pudding mixed with nuts</p>
+            <p class="card-text"><strong>Price: $4.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/watermelon.jpg" alt="Fruit Platter">
+          <div class="card-body">
+            <h4 class="card-title">Fruit Platter</h4>
+            <p class="card-text">Watermelon, blueberries, and oranges</p>
+            <p class="card-text"><strong>Price: $3.50</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="drinks" class="section bg-drinks">
+    <h2 class="section-title">Drinks</h2>
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/mulled-wine.jpg" alt="Mulled Wine">
+          <div class="card-body">
+            <h4 class="card-title">Mulled Wine</h4>
+            <p class="card-text">Heated wine mixed with fruits and spices</p>
+            <p class="card-text"><strong>Price: $8.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/orange.jpg" alt="Orange Juice">
+          <div class="card-body">
+            <h4 class="card-title">Orange Juice</h4>
+            <p class="card-text">Freshly squeezed orange juice</p>
+            <p class="card-text"><strong>Price: $5.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/tee.jpg" alt="Tea">
+          <div class="card-body">
+            <h4 class="card-title">Tea</h4>
+            <p class="card-text">Pu-erh tea</p>
+            <p class="card-text"><strong>Price: $4.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/drink.webp" alt="Whiskey">
+          <div class="card-body">
+            <h4 class="card-title">Whiskey</h4>
+            <p class="card-text">Whiskey with a hint of lemon juice</p>
+            <p class="card-text"><strong>Price: $12.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/beverage.jpg" alt="Oreo Smoothie">
+          <div class="card-body">
+            <h4 class="card-title">Oreo Smoothie</h4>
+            <p class="card-text">An Oreo-flavored Cola smoothie</p>
+            <p class="card-text"><strong>Price: $6.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card">
+          <img class="card-img-top" src="credits/coffee.jpg" alt="Coffee">
+          <div class="card-body">
+            <h4 class="card-title">Coffee</h4>
+            <p class="card-text">Freshly ground rich coffee</p>
+            <p class="card-text"><strong>Price: $3.00</strong></p>
+            <button class="btn btn-custom add-to-cart">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Mysterious East</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .bg-image {
+            background-image: url('credits/menubg.jpg');
+            background-size: cover;
+            background-position: center top;
+            background-repeat: no-repeat;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: rgba(255, 222, 2, 0.89);
+            color: #600909;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .header a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo {
+            margin-right: 10px;
+            height: 50px;
+            width: auto;
+            background-color: transparent;
+        }
+
+        .navbar-custom {
+            background-color: orange;
+            text-align: center;
+        }
+
+        .navbar-custom .navbar-nav .nav-link {
+            text-decoration: none;
+            color: #600909;
+            font-size: 18px;
+            position: relative;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: margin-bottom 0.5s;
+        }
+
+        .navbar-custom .navbar-nav .nav-link:hover {
+            color: white;
+            background-color: #b82d0e;
+            margin-bottom: 10px;
+        }
+
+        .navbar-custom .navbar-nav .nav-link:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #b82d0e transparent transparent transparent;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .gallery {
+            margin-top: 50px;
+        }
+
+        .container-custom {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body class="bg-image">
+<div class="container container-custom">
+    <header class="header">
+        <a href="My Restaurant.html">
+            <img class="logo" src="credits/logo1.jpg" alt="Logo" style="background-color: transparent;">
+            <h1>The Mysterious East</h1>
+        </a>
+        <p>Specialty Cuisine from China</p>
+    </header>
+
+    <nav class="navbar navbar-expand-sm navbar-custom mt-2 rounded">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="credits/logo1.jpg" alt="Logo" class="logo" style="background-color: transparent;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="locations.html">Locations and Directions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="hours.html">Hours of operation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="online ordering.html">Information for Online Ordering</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="history.html">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="menu.html">The major menus</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="container-fluid gallery">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="credits/chicken-soup.jpg" class="d-block w-100" alt="Chicken Soup">
+                    </div>
+                    <div class="col-6">
+                        <img src="credits/crayfish.jpg" class="d-block w-100" alt="Crayfish">
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="credits/duck.jpg" class="d-block w-100" alt="Duck">
+                    </div>
+                    <div class="col-6">
+                        <img src="credits/pork1.webp" class="d-block w-100" alt="Pork">
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="credits/lanzhou.jpg" class="d-block w-100" alt="Lanzhou">
+                    </div>
+                    <div class="col-6">
+                        <img src="credits/braise-pork.jpg" class="d-block w-100" alt="Braise Pork">
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="credits/cauliflower.webp" class="d-block w-100" alt="Cauliflower">
+                    </div>
+                    <div class="col-6">
+                        <img src="credits/drink.webp" class="d-block w-100" alt="Drink">
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="credits/fried-rice.jpg" class="d-block w-100" alt="Fried Rice">
+                    </div>
+                    <div class="col-6">
+                        <img src="credits/hotmeet.jpg" class="d-block w-100" alt="Hot Meet">
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="credits/mulled-wine.jpg" class="d-block w-100" alt="Mulled Wine">
+                    </div>
+                    <div class="col-6">
+                        <img src="credits/orange.jpg" class="d-block w-100" alt="Orange">
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="credits/proper-nutrition.jpg" class="d-block w-100" alt="Proper Nutrition">
+                    </div>
+                    <div class="col-6">
+                        <img src="credits/vegetables.jpg" class="d-block w-100" alt="Vegetables">
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <div class="col-6">
+                        <img src="credits/black-forest.jpg" class="d-block w-100" alt="Black Forest">
+                    </div>
+                    <div class="col-6">
+                        <img src="credits/venus.jpg" class="d-block w-100" alt="Venus">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+</body>
+</html>
